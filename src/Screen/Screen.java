@@ -3,6 +3,7 @@ package Screen;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_NICEST;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
@@ -10,14 +11,18 @@ import static org.lwjgl.opengl.GL11.GL_PERSPECTIVE_CORRECTION_HINT;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glHint;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 import org.lwjgl.LWJGLException;
@@ -48,7 +53,7 @@ public class Screen {
 				// Load Frame
 			try {
 				Display.setDisplayMode(new DisplayMode(screenWidth,screenHeight));
-				Display.setTitle("..Chess..");
+				Display.setTitle("..Tic Tac Toe..");
 				Display.create();
 			} catch (LWJGLException e){
 				e.printStackTrace();
@@ -75,6 +80,7 @@ public class Screen {
 					/* Render Images */
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 				
+				mc.input(screenHeight);
 				draw();
 				Display.update();
 				Display.sync(60);				
@@ -100,6 +106,7 @@ public class Screen {
 	 * Draw all components
 	 */
 	private void draw(){
+		drawGrid();
 		drawComponents();
 	}
 	
@@ -107,7 +114,6 @@ public class Screen {
 	/*
 	 * Load Textures
 	 */
-	
 	private void loadAllGameTextures(){
 		glEnable(GL_TEXTURE_2D);
 		
@@ -119,6 +125,26 @@ public class Screen {
 		glEnable(GL_TEXTURE_2D);
 		
 		glDisable(GL_TEXTURE_2D);
+	}
+	
+	private void drawGrid(){
+		
+		glColor3f(1.0f, 1.0f, 1.0f);
+		
+		float lineLength = 6f;
+		float gap = 2.0f;
+		
+		glBegin(GL_LINES);
+			glVertex2f(-lineLength, gap);
+				glVertex2f(lineLength, gap);
+			glVertex2f(-lineLength, -gap);
+				glVertex2f(lineLength, -gap);
+			glVertex2f(gap, -lineLength);
+				glVertex2f(gap, lineLength);
+			glVertex2f(-gap, -lineLength);
+				glVertex2f(-gap,lineLength);
+				
+		glEnd();
 	}
 	
 
