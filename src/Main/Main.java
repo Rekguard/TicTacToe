@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		
-		new Screen(300,300);
+		new Screen(600,600);
 		
 	}
 }
